@@ -21,17 +21,17 @@ var TodoApp = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (TodoApp.__proto__ || Object.getPrototypeOf(TodoApp)).call(this, props, context));
 
-    _this.inputChange = function (event) {
-      //this.state.inputText = event.target.value;
+    _this.onInputChange = function (event) {
       _this.setState({ inputText: event.target.value });
     };
 
     _this.handleSubmit = function (event) {
       var inputText = _this.state.inputText;
-      if ((event.which === 13 || event.keyCode === 13) && inputText !== '') {
-        var origTodos = _this.state.todos;
+      if ((event.which === 13 || event.keyCode === 13) && inputText.trim() !== '') {
+        var todos = _this.state.todos;
+
         _this.setState({
-          todos: [{ value: inputText, done: false }].concat(_toConsumableArray(origTodos)),
+          todos: [{ value: inputText, done: false }].concat(_toConsumableArray(todos)),
           inputText: ""
         });
       };
@@ -45,10 +45,10 @@ var TodoApp = function (_Component) {
 
     _this.handleCheck = function (idx) {
       var todos = _this.state.todos;
-      var cur_todo = todos[idx];
+      var curTodo = todos[idx];
       todos.splice(idx, 1, {
-        value: cur_todo.value,
-        done: !cur_todo.done
+        value: curTodo.value,
+        done: !curTodo.done
       });
       _this.setState({ todos: todos });
     };
@@ -93,7 +93,7 @@ var TodoApp = function (_Component) {
         ),
         React.createElement('input', {
           value: inputText,
-          onChange: this.inputChange,
+          onChange: this.onInputChange,
           onKeyDown: this.handleSubmit,
           className: 'new-todo'
         }),
@@ -126,8 +126,8 @@ var TodoItem = function (_React$Component) {
     value: function render() {
       var _this4 = this;
 
-      console.log(this.props.key);
       var done = this.props.done;
+
       return React.createElement(
         'li',
         { className: done ? "completed" : "" },
@@ -160,30 +160,59 @@ var CountDisplay = function (_React$Component2) {
   _inherits(CountDisplay, _React$Component2);
 
   function CountDisplay() {
+    var _ref;
+
+    var _temp, _this5, _ret;
+
     _classCallCheck(this, CountDisplay);
 
-    return _possibleConstructorReturn(this, (CountDisplay.__proto__ || Object.getPrototypeOf(CountDisplay)).apply(this, arguments));
-  }
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-  _createClass(CountDisplay, [{
-    key: 'render',
-    value: function render() {
-      //const todos = this.props.todos;
-      return React.createElement(
-        'footer',
-        { className: 'todo-count' },
-        React.createElement(
+    return _ret = (_temp = (_this5 = _possibleConstructorReturn(this, (_ref = CountDisplay.__proto__ || Object.getPrototypeOf(CountDisplay)).call.apply(_ref, [this].concat(args))), _this5), _this5.renderLeftTodoNum = function () {
+      var count = _this5.props.todos.filter(function (v) {
+        return !v["done"];
+      }).length;
+      if (count > 1) {
+        return React.createElement(
           'span',
           null,
           React.createElement(
             'strong',
             null,
-            this.props.todos.filter(function (v) {
-              return !v["done"];
-            }).length
+            count
           ),
-          ' left'
-        )
+          ' items left'
+        );
+      } else if (count === 1) {
+        return React.createElement(
+          'span',
+          null,
+          React.createElement(
+            'strong',
+            null,
+            '1'
+          ),
+          ' item left'
+        );
+      } else {
+        return React.createElement(
+          'span',
+          null,
+          'no item'
+        );
+      }
+    }, _temp), _possibleConstructorReturn(_this5, _ret);
+  }
+
+  _createClass(CountDisplay, [{
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'footer',
+        { className: 'todo-count' },
+        this.renderLeftTodoNum()
       );
     }
   }]);

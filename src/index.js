@@ -13,19 +13,18 @@ class TodoApp extends Component {
     };
   }
 
-  inputChange = (event) => {
-    //this.state.inputText = event.target.value;
+  onInputChange = (event) => {
     this.setState({ inputText: event.target.value });
   }
 
   handleSubmit = (event) => {
     const inputText = this.state.inputText
-    if ((event.which === 13 || event.keyCode === 13) && inputText !== '') {
-      let origTodos = this.state.todos;
+    if ((event.which === 13 || event.keyCode === 13) && inputText.trim() !== '') {
+      const { todos } = this.state;
       this.setState({
         todos: [ 
           { value: inputText, done: false }, 
-          ...origTodos,
+          ...todos,
         ],
         inputText: "",
       });
@@ -40,10 +39,10 @@ class TodoApp extends Component {
 
   handleCheck = (idx) => {
     let todos = this.state.todos;
-    const cur_todo = todos[idx]
+    const curTodo = todos[idx]
     todos.splice(idx, 1, {
-      value: cur_todo.value,
-      done: !cur_todo.done,
+      value: curTodo.value,
+      done: !curTodo.done,
     });
     this.setState({ todos: todos });
   }
@@ -67,7 +66,7 @@ class TodoApp extends Component {
         <h1>Todo List</h1>
         <input
           value={inputText}
-          onChange={this.inputChange}
+          onChange={this.onInputChange}
           onKeyDown={this.handleSubmit}
           className="new-todo"
         />
@@ -106,15 +105,21 @@ class TodoItem extends React.Component {
 
 
 class CountDisplay extends React.Component {
+  renderLeftTodoNum = () => {
+    const count = this.props.todos.filter((v) => !v["done"]).length;
+    if (count > 1) {
+      return <span><strong>{count}</strong> items left</span>;
+    } else if (count === 1) {
+      return <span><strong>1</strong> item left</span>;
+    } else {
+      return <span>no item</span>;
+    }
+  }
+
   render() {
-    //const todos = this.props.todos;
     return (
       <footer className="todo-count">
-        <span>
-          <strong>
-            {this.props.todos.filter((v) => !v["done"]).length}
-          </strong> left
-        </span>
+        {this.renderLeftTodoNum()}
       </footer>
     );
   };
