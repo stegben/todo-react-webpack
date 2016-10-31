@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint src *.js",
+    "lint": "eslint src",
     "start": "serve . -p 3001",
     "clean": "rimraf dist",
     "build": "npm run clean && webpack --config webpack.config.js",

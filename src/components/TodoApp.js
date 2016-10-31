@@ -4,14 +4,19 @@ import TodoItem from './TodoItem';
 import CountDisplay from './CountDisplay';
 
 
+const generateInitTodos = (nTodos) => {
+  const idxs = [...Array(nTodos).keys()];
+  return idxs.map(idx => ({
+    value: `todo sample item ${idx + 1}`,
+    done: ((idx % 2) === 1),
+  }));
+};
+
 class TodoApp extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      todos: [
-        { value: 'todo sample item 1', done: false },
-        { value: 'todo sample item 2', done: true },
-      ],
+      todos: generateInitTodos(3),
       inputText: '',
     };
   }
@@ -54,7 +59,7 @@ class TodoApp extends Component {
     <TodoItem
       content={input.value}
       done={input.done}
-      key={idx}
+      key={`todo-item-key-for:${input.value}`}
       onCancel={() => this.handleDelete(idx)}
       onCheckClick={() => this.handleCheck(idx)}
     />
