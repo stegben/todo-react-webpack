@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint src",
+    "lint": "eslint src *.js",
     "start": "serve . -p 3001",
     "clean": "rimraf dist",
     "build": "npm run clean && webpack --config webpack.config.js",
@@ -13,6 +13,7 @@
   "devDependencies": {
     "babel-cli": "^6.16.0",
     "babel-core": "^6.18.0",
+    "babel-eslint": "^7.1.0",
     "babel-loader": "^6.2.7",
     "babel-plugin-transform-object-rest-spread": "^6.16.0",
     "babel-preset-latest": "^6.16.0",
@@ -28,5 +29,9 @@
     "serve": "^1.4.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.3"
+  },
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   }
 }
